@@ -55,10 +55,10 @@ def check_answer(is_correct, word_data):
 # 1. ЭКРАН МЕНЮ
 if st.session_state.app_state == 'menu':
     st.markdown("<h1 style='text-align: center;'>🎯 Тренажер «Ударная Сила»</h1>", unsafe_allow_html=True)
-    st.info("Проверь свои знания в режиме **Спринт**! У тебя есть ровно **1 минута**, чтобы расставить как можно больше правильных ударений.")
+    st.info("Проверь свои знания в режиме **Спринт**! У тебя есть **1 минута**, чтобы выбрать как можно больше слов с правильным ударением.")
     
     # Большая кнопка старта
-    if st.button("🔥 НАЧАТЬ ИГРУ (60 сек)", use_container_width=True):
+    if st.button("🔥 НАЧАТЬ ИГРУ", use_container_width=True):
         start_game()
         st.rerun()
 
