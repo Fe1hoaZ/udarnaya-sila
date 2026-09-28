@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import json
 import random
 import time
@@ -86,8 +87,70 @@ elif st.session_state.app_state == 'playing':
     current_word = st.session_state.current_word
     word_data = database[current_word]
     
-    # Показываем слово (крупно)
-    st.markdown(f"<h1 style='text-align: center;'>{current_word}</h1>", unsafe_allow_html=True)
+    # Показываем слово с кнопкой озвучки
+    html_code = f"""
+    <html>
+        <head>
+            <style>
+                body {{
+                    margin: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: "Source Sans Pro", sans-serif;
+                    color: #31333F; /* Цвет для светлой темы */
+                }}
+                @media (prefers-color-scheme: dark) {{
+                    body {{
+                        color: #FAFAFA; /* Цвет для темной темы */
+                    }}
+                }}
+                .word-container {{
+                    display: flex;
+                    align-items: center;
+                    gap: 15px;
+                }}
+                h1 {{
+                    margin: 0;
+                    font-size: 3rem;
+                    font-weight: bold;
+                }}
+                .play-btn {{
+                    background: #4285F4; /* Синий цвет как в словаре */
+                    border: none;
+                    border-radius: 50%;
+                    width: 45px;
+                    height: 45px;
+                    cursor: pointer;
+                    color: white;
+                    font-size: 1.2rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                    transition: transform 0.1s;
+                }}
+                .play-btn:active {{
+                    transform: scale(0.95);
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="word-container">
+                <button 
+                    class="play-btn"
+                    onclick="window.speechSynthesis.cancel(); let msg = new SpeechSynthesisUtterance('{current_word}'); msg.lang = 'ru-RU'; msg.rate = 0.9; window.speechSynthesis.speak(msg);" 
+                    title="Озвучить"
+                >
+                    🔊
+                </button>
+                <h1>{current_word}</h1>
+            </div>
+        </body>
+    </html>
+    """
+    # Рендерим HTML с фиксированной высотой, чтобы избежать полос прокрутки
+    components.html(html_code, height=80)
     
     # Перемешиваем варианты
     options = [
