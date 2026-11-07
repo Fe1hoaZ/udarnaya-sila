@@ -105,7 +105,7 @@ elif st.session_state.app_state == 'playing':
                     justify-content: center;
                     align-items: center;
                     font-family: "Source Sans Pro", sans-serif;
-                    color: #FAFAFA;
+                    background-color: transparent;
                 }}
                 .word-container {{
                     display: flex;
@@ -121,7 +121,7 @@ elif st.session_state.app_state == 'playing':
                     letter-spacing: 0.5px;
                     word-break: break-word;
                     text-align: center;
-                    color: #FAFAFA;
+                    color: #2196F3; /* Яркий синий цвет, чётко видимый на тёмной и белой теме */
                 }}
                 .play-btn {{
                     background: #4285F4;
