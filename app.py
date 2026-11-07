@@ -99,7 +99,7 @@ elif st.session_state.app_state == 'playing':
         audio_b64 = ""
 
     # Адаптивный блок со словом и фиксированной кнопкой
-    html_code = f"""
+   html_code = f"""
     <html>
         <head>
             <style>
@@ -109,10 +109,7 @@ elif st.session_state.app_state == 'playing':
                     justify-content: center;
                     align-items: center;
                     font-family: "Source Sans Pro", sans-serif;
-                    color: #31333F;
-                }}
-                @media (prefers-color-scheme: dark) {{
-                    body {{ color: #FAFAFA; }}
+                    color: #FAFAFA; /* Зафиксировали белый цвет */
                 }}
                 .word-container {{
                     display: flex;
@@ -123,11 +120,12 @@ elif st.session_state.app_state == 'playing':
                 }}
                 h1 {{
                     margin: 0;
-                    font-size: clamp(1.8rem, 6.5vw, 3.2rem); /* Динамический шрифт под экран */
+                    font-size: clamp(1.8rem, 6.5vw, 3.2rem);
                     font-weight: 800;
                     letter-spacing: 0.5px;
                     word-break: break-word;
                     text-align: center;
+                    color: #FAFAFA; /* Дополнительно гарантируем белый цвет заголовка */
                 }}
                 .play-btn {{
                     background: #4285F4;
@@ -137,7 +135,7 @@ elif st.session_state.app_state == 'playing':
                     height: 52px;
                     min-width: 52px;
                     min-height: 52px;
-                    flex-shrink: 0; /* Гарантирует, что кнопка не сжмётся */
+                    flex-shrink: 0;
                     cursor: pointer;
                     color: white;
                     font-size: 1.4rem;
