@@ -7,15 +7,18 @@ import base64
 
 st.set_page_config(page_title="Ударная Сила", page_icon="🎯")
 
-# Стилизация стандартных кнопок Streamlit (вариантов ответа)
+# Стилизация текста внутри кнопок Streamlit и глобальных элементов
 st.markdown("""
     <style>
-    div.stButton > button {
-        font-size: 1.8rem !important;
+    /* Текст внутри кнопок ответов */
+    div.stButton > button p {
+        font-size: 2.2rem !important;
         font-weight: bold !important;
-        padding: 18px 30px !important;
-        border-radius: 14px !important;
-        min-height: 70px !important;
+        line-height: 1.2 !important;
+    }
+    div.stButton > button {
+        min-height: 90px !important;
+        border-radius: 16px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -78,10 +81,11 @@ elif st.session_state.app_state == 'playing':
         
     st.subheader("⏱️ Спринт: 1 минута")
     
+    # Крупная панель статистики
     col1, col2, col3 = st.columns(3)
-    col1.write(f"**⏳ Осталось:** {time_left} сек")
-    col2.write(f"**✅ Верно:** {st.session_state.score}")
-    col3.write(f"**❌ Ошибок:** {st.session_state.errors}")
+    col1.markdown(f"<div style='font-size: 1.4rem; font-weight: 600;'>⏳ Осталось: <b>{time_left} сек</b></div>", unsafe_allow_html=True)
+    col2.markdown(f"<div style='font-size: 1.4rem; font-weight: 600;'>✅ Верно: <b>{st.session_state.score}</b></div>", unsafe_allow_html=True)
+    col3.markdown(f"<div style='font-size: 1.4rem; font-weight: 600;'>❌ Ошибок: <b>{st.session_state.errors}</b></div>", unsafe_allow_html=True)
     
     st.divider()
     
@@ -95,7 +99,7 @@ elif st.session_state.app_state == 'playing':
     except FileNotFoundError:
         audio_b64 = ""
 
-    # Увеличенная верстка слова и динамика
+    # Крупное слово и иконка динамика
     html_code = f"""
     <html>
         <head>
@@ -118,7 +122,7 @@ elif st.session_state.app_state == 'playing':
                 }}
                 h1 {{
                     margin: 0;
-                    font-size: 4.2rem;
+                    font-size: 4.5rem;
                     font-weight: 800;
                     letter-spacing: 1px;
                 }}
@@ -126,11 +130,11 @@ elif st.session_state.app_state == 'playing':
                     background: #4285F4;
                     border: none;
                     border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
+                    width: 65px;
+                    height: 65px;
                     cursor: pointer;
                     color: white;
-                    font-size: 1.6rem;
+                    font-size: 1.8rem;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -153,7 +157,7 @@ elif st.session_state.app_state == 'playing':
     </html>
     """
     
-    components.html(html_code, height=110)
+    components.html(html_code, height=120)
     
     options = [
         (word_data["correct"], True),
@@ -172,7 +176,7 @@ elif st.session_state.app_state == 'playing':
             st.rerun()
             
     if st.session_state.feedback:
-        st.markdown(f"<h3 style='text-align: center;'>{st.session_state.feedback}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; margin-top: 20px;'>{st.session_state.feedback}</h2>", unsafe_allow_html=True)
 
 # 3. ЭКРАН РЕЗУЛЬТАТОВ
 elif st.session_state.app_state == 'results':
