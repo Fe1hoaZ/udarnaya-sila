@@ -7,18 +7,18 @@ import base64
 
 st.set_page_config(page_title="Ударная Сила", page_icon="🎯")
 
-# Стилизация текста внутри кнопок Streamlit и глобальных элементов
+# Стилизация кнопок ответов (адаптировано под мобильные)
 st.markdown("""
     <style>
-    /* Текст внутри кнопок ответов */
     div.stButton > button p {
-        font-size: 2.2rem !important;
+        font-size: 1.6rem !important;
         font-weight: bold !important;
         line-height: 1.2 !important;
     }
     div.stButton > button {
-        min-height: 90px !important;
-        border-radius: 16px !important;
+        min-height: 75px !important;
+        border-radius: 14px !important;
+        padding: 10px 15px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -64,7 +64,7 @@ def check_answer(is_correct, word_data):
 
 # 1. ЭКРАН МЕНЮ
 if st.session_state.app_state == 'menu':
-    st.markdown("<h1 style='text-align: center; font-size: 3rem;'>🎯 Тренажер «Ударная Сила»</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; font-size: 2.5rem;'>🎯 Тренажер «Ударная Сила»</h1>", unsafe_allow_html=True)
     st.info("Проверь свои знания в режиме **Спринт**! У тебя есть **1 минута**, чтобы выбрать как можно больше слов с правильным ударением.")
     
     if st.button("🔥 НАЧАТЬ ИГРУ", use_container_width=True):
@@ -81,11 +81,10 @@ elif st.session_state.app_state == 'playing':
         
     st.subheader("⏱️ Спринт: 1 минута")
     
-    # Крупная панель статистики
     col1, col2, col3 = st.columns(3)
-    col1.markdown(f"<div style='font-size: 1.4rem; font-weight: 600;'>⏳ Осталось: <b>{time_left} сек</b></div>", unsafe_allow_html=True)
-    col2.markdown(f"<div style='font-size: 1.4rem; font-weight: 600;'>✅ Верно: <b>{st.session_state.score}</b></div>", unsafe_allow_html=True)
-    col3.markdown(f"<div style='font-size: 1.4rem; font-weight: 600;'>❌ Ошибок: <b>{st.session_state.errors}</b></div>", unsafe_allow_html=True)
+    col1.markdown(f"<div style='font-size: 1.1rem; font-weight: 600;'>⏳ {time_left} сек</div>", unsafe_allow_html=True)
+    col2.markdown(f"<div style='font-size: 1.1rem; font-weight: 600;'>✅ {st.session_state.score}</div>", unsafe_allow_html=True)
+    col3.markdown(f"<div style='font-size: 1.1rem; font-weight: 600;'>❌ {st.session_state.errors}</div>", unsafe_allow_html=True)
     
     st.divider()
     
@@ -99,7 +98,7 @@ elif st.session_state.app_state == 'playing':
     except FileNotFoundError:
         audio_b64 = ""
 
-    # Крупное слово и иконка динамика
+    # Адаптивный блок со словом и фиксированной кнопкой
     html_code = f"""
     <html>
         <head>
@@ -118,27 +117,34 @@ elif st.session_state.app_state == 'playing':
                 .word-container {{
                     display: flex;
                     align-items: center;
-                    gap: 20px;
+                    justify-content: center;
+                    gap: 12px;
+                    width: 100%;
                 }}
                 h1 {{
                     margin: 0;
-                    font-size: 4.5rem;
+                    font-size: clamp(1.8rem, 6.5vw, 3.2rem); /* Динамический шрифт под экран */
                     font-weight: 800;
-                    letter-spacing: 1px;
+                    letter-spacing: 0.5px;
+                    word-break: break-word;
+                    text-align: center;
                 }}
                 .play-btn {{
                     background: #4285F4;
                     border: none;
                     border-radius: 50%;
-                    width: 65px;
-                    height: 65px;
+                    width: 52px;
+                    height: 52px;
+                    min-width: 52px;
+                    min-height: 52px;
+                    flex-shrink: 0; /* Гарантирует, что кнопка не сжмётся */
                     cursor: pointer;
                     color: white;
-                    font-size: 1.8rem;
+                    font-size: 1.4rem;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+                    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
                     transition: transform 0.1s, background 0.2s;
                 }}
                 .play-btn:hover {{ background: #3367D6; }}
@@ -157,7 +163,7 @@ elif st.session_state.app_state == 'playing':
     </html>
     """
     
-    components.html(html_code, height=120)
+    components.html(html_code, height=90)
     
     options = [
         (word_data["correct"], True),
@@ -176,7 +182,7 @@ elif st.session_state.app_state == 'playing':
             st.rerun()
             
     if st.session_state.feedback:
-        st.markdown(f"<h2 style='text-align: center; margin-top: 20px;'>{st.session_state.feedback}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center; margin-top: 15px;'>{st.session_state.feedback}</h3>", unsafe_allow_html=True)
 
 # 3. ЭКРАН РЕЗУЛЬТАТОВ
 elif st.session_state.app_state == 'results':
