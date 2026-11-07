@@ -7,7 +7,6 @@ import base64
 
 st.set_page_config(page_title="Ударная Сила", page_icon="🎯")
 
-# Стилизация кнопок ответов (адаптировано под мобильные)
 st.markdown("""
     <style>
     div.stButton > button p {
@@ -62,7 +61,6 @@ def check_answer(is_correct, word_data):
     
     st.session_state.current_word = random.choice(words_list)
 
-# 1. ЭКРАН МЕНЮ
 if st.session_state.app_state == 'menu':
     st.markdown("<h1 style='text-align: center; font-size: 2.5rem;'>🎯 Тренажер «Ударная Сила»</h1>", unsafe_allow_html=True)
     st.info("Проверь свои знания в режиме **Спринт**! У тебя есть **1 минута**, чтобы выбрать как можно больше слов с правильным ударением.")
@@ -71,7 +69,6 @@ if st.session_state.app_state == 'menu':
         start_game()
         st.rerun()
 
-# 2. ЭКРАН ИГРОВОГО ПРОЦЕССА
 elif st.session_state.app_state == 'playing':
     time_left = int(st.session_state.end_time - time.time())
     
@@ -98,8 +95,7 @@ elif st.session_state.app_state == 'playing':
     except FileNotFoundError:
         audio_b64 = ""
 
-    # Адаптивный блок со словом и фиксированной кнопкой
-   html_code = f"""
+    html_code = f"""
     <html>
         <head>
             <style>
@@ -109,7 +105,7 @@ elif st.session_state.app_state == 'playing':
                     justify-content: center;
                     align-items: center;
                     font-family: "Source Sans Pro", sans-serif;
-                    color: #FAFAFA; /* Зафиксировали белый цвет */
+                    color: #FAFAFA;
                 }}
                 .word-container {{
                     display: flex;
@@ -125,7 +121,7 @@ elif st.session_state.app_state == 'playing':
                     letter-spacing: 0.5px;
                     word-break: break-word;
                     text-align: center;
-                    color: #FAFAFA; /* Дополнительно гарантируем белый цвет заголовка */
+                    color: #FAFAFA;
                 }}
                 .play-btn {{
                     background: #4285F4;
@@ -182,7 +178,6 @@ elif st.session_state.app_state == 'playing':
     if st.session_state.feedback:
         st.markdown(f"<h3 style='text-align: center; margin-top: 15px;'>{st.session_state.feedback}</h3>", unsafe_allow_html=True)
 
-# 3. ЭКРАН РЕЗУЛЬТАТОВ
 elif st.session_state.app_state == 'results':
     st.markdown("<h1 style='text-align: center;'>🏆 Время вышло!</h1>", unsafe_allow_html=True)
     st.divider()
