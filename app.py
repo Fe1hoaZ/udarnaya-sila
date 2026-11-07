@@ -7,6 +7,19 @@ import base64
 
 st.set_page_config(page_title="Ударная Сила", page_icon="🎯")
 
+# Стилизация стандартных кнопок Streamlit (вариантов ответа)
+st.markdown("""
+    <style>
+    div.stButton > button {
+        font-size: 1.8rem !important;
+        font-weight: bold !important;
+        padding: 18px 30px !important;
+        border-radius: 14px !important;
+        min-height: 70px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 @st.cache_data
 def load_data():
     with open('database.json', 'r', encoding='utf-8') as f:
@@ -46,14 +59,16 @@ def check_answer(is_correct, word_data):
     
     st.session_state.current_word = random.choice(words_list)
 
+# 1. ЭКРАН МЕНЮ
 if st.session_state.app_state == 'menu':
-    st.markdown("<h1 style='text-align: center;'>🎯 Тренажер «Ударная Сила»</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; font-size: 3rem;'>🎯 Тренажер «Ударная Сила»</h1>", unsafe_allow_html=True)
     st.info("Проверь свои знания в режиме **Спринт**! У тебя есть **1 минута**, чтобы выбрать как можно больше слов с правильным ударением.")
     
     if st.button("🔥 НАЧАТЬ ИГРУ", use_container_width=True):
         start_game()
         st.rerun()
 
+# 2. ЭКРАН ИГРОВОГО ПРОЦЕССА
 elif st.session_state.app_state == 'playing':
     time_left = int(st.session_state.end_time - time.time())
     
@@ -80,6 +95,7 @@ elif st.session_state.app_state == 'playing':
     except FileNotFoundError:
         audio_b64 = ""
 
+    # Увеличенная верстка слова и динамика
     html_code = f"""
     <html>
         <head>
@@ -98,29 +114,31 @@ elif st.session_state.app_state == 'playing':
                 .word-container {{
                     display: flex;
                     align-items: center;
-                    gap: 15px;
+                    gap: 20px;
                 }}
                 h1 {{
                     margin: 0;
-                    font-size: 3rem;
-                    font-weight: bold;
+                    font-size: 4.2rem;
+                    font-weight: 800;
+                    letter-spacing: 1px;
                 }}
                 .play-btn {{
                     background: #4285F4;
                     border: none;
                     border-radius: 50%;
-                    width: 45px;
-                    height: 45px;
+                    width: 60px;
+                    height: 60px;
                     cursor: pointer;
                     color: white;
-                    font-size: 1.2rem;
+                    font-size: 1.6rem;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                    transition: transform 0.1s;
+                    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+                    transition: transform 0.1s, background 0.2s;
                 }}
-                .play-btn:active {{ transform: scale(0.95); }}
+                .play-btn:hover {{ background: #3367D6; }}
+                .play-btn:active {{ transform: scale(0.92); }}
             </style>
         </head>
         <body>
@@ -135,7 +153,7 @@ elif st.session_state.app_state == 'playing':
     </html>
     """
     
-    components.html(html_code, height=80)
+    components.html(html_code, height=110)
     
     options = [
         (word_data["correct"], True),
@@ -154,8 +172,9 @@ elif st.session_state.app_state == 'playing':
             st.rerun()
             
     if st.session_state.feedback:
-        st.caption(st.session_state.feedback)
+        st.markdown(f"<h3 style='text-align: center;'>{st.session_state.feedback}</h3>", unsafe_allow_html=True)
 
+# 3. ЭКРАН РЕЗУЛЬТАТОВ
 elif st.session_state.app_state == 'results':
     st.markdown("<h1 style='text-align: center;'>🏆 Время вышло!</h1>", unsafe_allow_html=True)
     st.divider()
